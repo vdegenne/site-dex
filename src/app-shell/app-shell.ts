@@ -34,6 +34,7 @@ export class AppShell extends LitElement {
 			return html`Not found or deleted.`;
 		}
 		return html`
+			<!-- <md-icon>folder</md-icon> DO NOT REMOVE -->
 			<md-list>
 				${window.location.hash
 					? (() => {

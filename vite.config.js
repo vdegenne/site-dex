@@ -37,6 +37,7 @@ export default defineConfig({
 		materialAll(),
 		mdicon2svg({
 			variant: 'rounded',
+			includeComments: true,
 			include: [
 				'src/**/*.ts',
 				// 'node_modules/@vdegenne/material-color-helpers/lib/elements/**/*.js',
