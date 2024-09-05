@@ -19,7 +19,7 @@ class AppStore extends ReactiveController {
 	@state() structure: BookmarkFolder = {
 		title: 'root',
 		items: [
-			{title: 'X', url: 'x.com'},
+			{title: 'X', url: 'https://x.com'},
 			{title: 'sub', items: []},
 		],
 	};
