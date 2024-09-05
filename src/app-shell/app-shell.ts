@@ -34,7 +34,6 @@ export class AppShell extends LitElement {
 			return html`Not found or deleted.`;
 		}
 		return html`
-			<!-- <md-icon>folder</md-icon> DO NOT REMOVE -->
 			<md-list>
 				${window.location.hash
 					? (() => {
@@ -74,19 +73,16 @@ export class AppShell extends LitElement {
 								.forEach((el) => el.setAttribute('transparent', ''));
 						}}
 					>
-						<md-icon slot="start">
-							${'items' in item
-								? 'folder'
-								: (() => {
-										try {
-											const url = new URL(item.url);
-											return html` <img
-												src="${url.protocol}//${url.host}/favicon.ico"
-											/>`;
-										} catch {}
-									})()}
-						</md-icon>
-
+						${'items' in item
+							? html`<md-icon slot="start">folder</md-icon>`
+							: (() => {
+									try {
+										const url = new URL(item.url);
+										return html`<md-icon slot="start"
+											><img src="${url.protocol}//${url.host}/favicon.ico"
+										/></md-icon>`;
+									} catch {}
+								})()}
 						${item.title}
 
 						<md-icon-button
