@@ -1,0 +1,10 @@
+:host {
+	position: absolute;
+	inset: 0;
+}
+md-fab {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	margin: 24px;
+}

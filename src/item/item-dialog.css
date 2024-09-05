@@ -1,0 +1,7 @@
+md-outlined-text-field {
+	width: 100%;
+}
+md-filled-button[error] {
+	--md-sys-color-primary: var(--md-sys-color-error);
+	--md-sys-color-on-primary: var(--md-sys-color-on-error);
+}
