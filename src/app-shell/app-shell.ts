@@ -38,15 +38,9 @@ export class AppShell extends LitElement {
 			const item = this.list.items[0];
 			if (item) {
 				item.focus();
+				// @ts-ignore
 				this.list.listController.activateItem(item);
 			}
-			// await this.updateComplete;
-			// await this.list.updateComplete;
-			// for (const item of this.list.items) {
-			// 	item.blur();
-			// 	// @ts-ignore
-			// 	this.list.listController.deactivateItem(item);
-			// }
 		} catch {}
 	}
 
@@ -105,7 +99,9 @@ export class AppShell extends LitElement {
 											return html`<md-icon slot="start"
 												><img src="${url.protocol}//${url.host}/favicon.ico"
 											/></md-icon>`;
-										} catch {}
+										} catch (e) {
+											console.log(e);
+										}
 									})()}
 							${item.title}
 
