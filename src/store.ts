@@ -1,6 +1,9 @@
 import {ReactiveController, state} from '@snar/lit';
 import {PropertyValueMap} from 'snar';
 import {saveToLocalStorage} from 'snar-save-to-local-storage';
+import {app} from './app-shell/app-shell.js';
+import {activateFirstItem} from '@material/web/list/internal/list-navigation-helpers.js';
+import {sleep} from './utils.js';
 
 export interface Bookmark {
 	title: string;
