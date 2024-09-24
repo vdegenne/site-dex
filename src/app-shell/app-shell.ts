@@ -1,13 +1,12 @@
 import {type MdList} from '@material/web/list/list.js';
 import {LitElement, html} from 'lit';
-import {repeat} from 'lit/directives/repeat.js';
 import {withStyles} from 'lit-with-styles';
 import {customElement, query} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {materialShellLoadingOff} from 'material-shell';
 import {getItemDialog} from '../imports.js';
 import {store} from '../store.js';
 import styles from './app-shell.css?inline';
-import {sleep} from '../utils.js';
 
 declare global {
 	interface Window {
@@ -23,13 +22,20 @@ declare global {
 export class AppShell extends LitElement {
 	@query('md-list') list!: MdList;
 
+	getListItems() {
+		return this.list.items;
+	}
+	get selectedListItem() {
+		return this.getListItems().find((el) => el.tabIndex === 0);
+	}
+
 	async firstUpdated() {
 		store.bind(this);
 		materialShellLoadingOff.call(this);
 	}
 
 	updated() {
-		this.selectFirst();
+		// this.selectFirst();
 	}
 
 	async selectFirst() {
@@ -108,6 +114,30 @@ export class AppShell extends LitElement {
 							<md-icon-button
 								transparent
 								slot="end"
+								class="move-up-button"
+								@click=${async (e: PointerEvent) => {
+									e.preventDefault();
+									store.moveItemUp(item);
+								}}
+							>
+								<md-icon>arrow_upward</md-icon>
+							</md-icon-button>
+
+							<md-icon-button
+								transparent
+								slot="end"
+								class="move-down-button"
+								@click=${async (e: PointerEvent) => {
+									e.preventDefault();
+									store.moveItemDown(item);
+								}}
+							>
+								<md-icon>arrow_downward</md-icon>
+							</md-icon-button>
+
+							<md-icon-button
+								transparent
+								slot="end"
 								@click=${async (e: PointerEvent) => {
 									e.preventDefault();
 									try {
@@ -118,7 +148,7 @@ export class AppShell extends LitElement {
 									} catch {}
 								}}
 							>
-								<md-icon slo>edit</md-icon>
+								<md-icon>edit</md-icon>
 							</md-icon-button>
 						</md-list-item>`;
 					},

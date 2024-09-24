@@ -1,9 +1,6 @@
 import {ReactiveController, state} from '@snar/lit';
-import {PropertyValueMap} from 'snar';
 import {saveToLocalStorage} from 'snar-save-to-local-storage';
 import {app} from './app-shell/app-shell.js';
-import {activateFirstItem} from '@material/web/list/internal/list-navigation-helpers.js';
-import {sleep} from './utils.js';
 
 export interface Bookmark {
 	title: string;
@@ -46,6 +43,7 @@ class AppStore extends ReactiveController {
 				this.selectedLeaf = leaf;
 			}
 			this.requestUpdate();
+			app.selectFirst();
 		};
 		window.addEventListener('hashchange', onHashChange);
 		onHashChange();
@@ -61,7 +59,30 @@ class AppStore extends ReactiveController {
 		this.requestUpdate();
 	}
 
-	getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
+	moveItemUp(item: BookmarkOrFolder, folder = this.selectedLeaf) {
+		const index = folder.items.indexOf(item);
+		if (index <= 0) {
+			return;
+		}
+		const newIndex = index - 1;
+		const switchElement = folder.items[newIndex];
+		folder.items[newIndex] = item;
+		folder.items[index] = switchElement;
+		this.requestUpdate();
+	}
+	moveItemDown(item: BookmarkOrFolder, folder = this.selectedLeaf) {
+		const index = folder.items.indexOf(item);
+		if (index === -1 || index === folder.items.length - 1) {
+			return;
+		}
+		const newIndex = index + 1;
+		const switchElement = folder.items[newIndex];
+		folder.items[newIndex] = item;
+		folder.items[index] = switchElement;
+		this.requestUpdate();
+	}
+
+	// getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
 }
 
 export const store = new AppStore();

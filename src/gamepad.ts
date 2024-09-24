@@ -1,6 +1,7 @@
 import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
 import {sleep} from './utils.js';
+import {store} from './store.js';
 
 const REPEATER_TIMEOUT = 80;
 const REPEATER_SPEED = 400;
@@ -21,6 +22,34 @@ gamectrl.on('connect', async (gamepad) => {
 	function noTrigger() {
 		return !gamepad.pressed.button6 && !gamepad.pressed.button7;
 	}
+	function isSecondary() {
+		return !gamepad.pressed.button6 && gamepad.pressed.button7;
+	}
+
+	function UP_FUNCTION() {
+		if (isSecondary()) {
+			const selectedItem = app.selectedListItem;
+			if (selectedItem) {
+				const moveButton =
+					selectedItem.querySelector<HTMLElement>('.move-up-button');
+				moveButton?.click();
+			}
+		} else {
+			app.activePreviousItem();
+		}
+	}
+	function DOWN_FUNCTION() {
+		if (isSecondary()) {
+			const selectedItem = app.selectedListItem;
+			if (selectedItem) {
+				const moveButton =
+					selectedItem.querySelector<HTMLElement>('.move-down-button');
+				moveButton?.click();
+			}
+		} else {
+			app.activeNextItem();
+		}
+	}
 
 	gamepad.axeThreshold = [0.4];
 
@@ -30,11 +59,11 @@ gamectrl.on('connect', async (gamepad) => {
 		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
-				app.activePreviousItem();
+				UP_FUNCTION();
 			}, REPEATER_SPEED);
 			// app.activePreviousItem();
 		}, REPEATER_TIMEOUT);
-		app.activePreviousItem();
+		UP_FUNCTION();
 	});
 	gamepad.after(XBoxButton.UP, () => {
 		clearTimeout(upKeyRepeaterTimeout);
@@ -46,11 +75,12 @@ gamectrl.on('connect', async (gamepad) => {
 		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
+				UP_FUNCTION();
 				app.activePreviousItem();
 			}, REPEATER_SPEED);
-			// app.activePreviousItem();
+			// UP_FUNCTION()
 		}, REPEATER_TIMEOUT);
-		app.activePreviousItem();
+		UP_FUNCTION();
 	});
 	gamepad.after(XBoxButton.DPAD_UP, () => {
 		clearTimeout(upKeyRepeaterTimeout);
@@ -63,11 +93,11 @@ gamectrl.on('connect', async (gamepad) => {
 		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
-				app.activeNextItem();
+				DOWN_FUNCTION();
 			}, REPEATER_SPEED);
-			// app.activeNextItem();
+			DOWN_FUNCTION();
 		}, REPEATER_TIMEOUT);
-		app.activeNextItem();
+		DOWN_FUNCTION();
 	});
 	gamepad.after(XBoxButton.LEFT_STICK_DOWN, () => {
 		clearTimeout(downKeyRepeaterTimeout);
@@ -79,11 +109,11 @@ gamectrl.on('connect', async (gamepad) => {
 		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
-				app.activeNextItem();
+				DOWN_FUNCTION();
 			}, REPEATER_SPEED);
-			// app.activeNextItem();
+			// DOWN_FUNCTION()
 		}, REPEATER_TIMEOUT);
-		app.activeNextItem();
+		DOWN_FUNCTION();
 	});
 	gamepad.after(XBoxButton.DPAD_DOWN, () => {
 		clearTimeout(downKeyRepeaterTimeout);
@@ -92,9 +122,9 @@ gamectrl.on('connect', async (gamepad) => {
 
 	gamepad.before(XBoxButton.B, () => {
 		if (noTrigger()) {
-			const item = app.list.items.find((i) => i.tabIndex === 0);
+			const item = app.selectedListItem;
 			// @ts-ignore
-			item.listItemRoot.click();
+			item?.listItemRoot.click();
 		}
 	});
 

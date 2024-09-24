@@ -129,7 +129,7 @@ export class ItemDialog extends LitElement {
 	submitResolve: (value: BookmarkOrFolder) => void;
 	submitReject: (reason?: any) => void;
 
-	async show(item: BookmarkOrFolder) {
+	async show(item?: BookmarkOrFolder) {
 		this.trackItem = item;
 		if (item) {
 			this.type = 'Update';
