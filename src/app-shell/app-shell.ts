@@ -9,6 +9,7 @@ import {store} from '../store.js';
 import styles from './app-shell.css?inline';
 import {copyToClipboard} from '../utils.js';
 import toast from 'toastit';
+import {type MdListItem} from '@material/web/all.js';
 
 declare global {
 	interface Window {
@@ -25,9 +26,9 @@ export class AppShell extends LitElement {
 	@query('md-list') list!: MdList;
 
 	getListItems() {
-		return this.list.items;
+		return this.list.items as MdListItem[];
 	}
-	get selectedListItem() {
+	get selectedListItem(): MdListItem {
 		return this.getListItems().find((el) => el.tabIndex === 0);
 	}
 

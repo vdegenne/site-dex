@@ -1,5 +1,6 @@
 import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
+import {sleep} from './utils.js';
 
 const REPEATER_TIMEOUT = 80;
 const REPEATER_SPEED = 400;
@@ -27,23 +28,25 @@ gamectrl.on('connect', async (gamepad) => {
 	function UP_FUNCTION() {
 		if (isSecondary()) {
 			const selectedItem = app.selectedListItem;
-			console.log(selectedItem);
 			if (selectedItem) {
 				const moveButton =
 					selectedItem.querySelector<HTMLElement>('.move-up-button');
 				moveButton?.click();
+				// selectedItem.focus();
 			}
 		} else {
 			app.activePreviousItem();
 		}
 	}
-	function DOWN_FUNCTION() {
+	async function DOWN_FUNCTION() {
 		if (isSecondary()) {
 			const selectedItem = app.selectedListItem;
 			if (selectedItem) {
 				const moveButton =
 					selectedItem.querySelector<HTMLElement>('.move-down-button');
 				moveButton?.click();
+				await sleep(50);
+				selectedItem.focus();
 			}
 		} else {
 			app.activeNextItem();
@@ -53,9 +56,6 @@ gamectrl.on('connect', async (gamepad) => {
 	gamepad.axeThreshold = [0.4];
 
 	gamepad.before(XBoxButton.UP, () => {
-		if (!noTrigger()) {
-			return;
-		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
@@ -69,9 +69,6 @@ gamectrl.on('connect', async (gamepad) => {
 		clearInterval(upKeyRepeaterInterval);
 	});
 	gamepad.before(XBoxButton.DPAD_UP, () => {
-		if (!noTrigger()) {
-			return;
-		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
@@ -87,9 +84,6 @@ gamectrl.on('connect', async (gamepad) => {
 	});
 
 	gamepad.before(XBoxButton.LEFT_STICK_DOWN, () => {
-		if (!noTrigger()) {
-			return;
-		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
@@ -103,9 +97,6 @@ gamectrl.on('connect', async (gamepad) => {
 		clearInterval(downKeyRepeaterInterval);
 	});
 	gamepad.before(XBoxButton.DPAD_DOWN, () => {
-		if (!noTrigger()) {
-			return;
-		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();

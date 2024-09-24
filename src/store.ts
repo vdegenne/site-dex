@@ -26,7 +26,7 @@ class AppStore extends ReactiveController {
 	selectedLeaf = this.structure;
 
 	firstUpdated() {
-		const onHashChange = () => {
+		const onHashChange = async () => {
 			let leaf = (this.selectedLeaf = this.structure);
 			const hash = window.location.hash.slice(1);
 			if (hash) {
@@ -43,6 +43,8 @@ class AppStore extends ReactiveController {
 				this.selectedLeaf = leaf;
 			}
 			this.requestUpdate();
+			await this.updateComplete;
+			await app.updateComplete;
 			app.selectFirst();
 		};
 		window.addEventListener('hashchange', onHashChange);
