@@ -28,7 +28,7 @@ class AppStore extends ReactiveController {
 	firstUpdated() {
 		const onHashChange = async () => {
 			let leaf = (this.selectedLeaf = this.structure);
-			const hash = window.location.hash.slice(1);
+			const hash = decodeURIComponent(window.location.hash.slice(1));
 			if (hash) {
 				const parts = hash.split('/').filter((i) => i);
 				for (const part of parts) {
