@@ -7,6 +7,8 @@ import {materialShellLoadingOff} from 'material-shell';
 import {getItemDialog} from '../imports.js';
 import {store} from '../store.js';
 import styles from './app-shell.css?inline';
+import {copyToClipboard} from '../utils.js';
+import toast from 'toastit';
 
 declare global {
 	interface Window {
@@ -154,17 +156,30 @@ export class AppShell extends LitElement {
 					},
 				)}
 			</md-list>
-			<md-fab
-				@click=${async () => {
-					try {
-						const dialog = await getItemDialog();
-						const item = await dialog.show();
-						store.pushItem(item);
-					} catch {}
-				}}
-			>
-				<md-icon slot="icon">add</md-icon>
-			</md-fab>
+
+			<div id="fabs">
+				<md-fab
+					variant="small"
+					@click=${async () => {
+						copyToClipboard(JSON.stringify(store.structure));
+						toast('Data copied to clipboard');
+					}}
+				>
+					<md-icon slot="icon">download</md-icon>
+				</md-fab>
+				<md-fab
+					size="large"
+					@click=${async () => {
+						try {
+							const dialog = await getItemDialog();
+							const item = await dialog.show();
+							store.pushItem(item);
+						} catch {}
+					}}
+				>
+					<md-icon slot="icon">add</md-icon>
+				</md-fab>
+			</div>
 		`;
 	}
 
