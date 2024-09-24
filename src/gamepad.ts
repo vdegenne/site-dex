@@ -1,7 +1,5 @@
 import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
-import {sleep} from './utils.js';
-import {store} from './store.js';
 
 const REPEATER_TIMEOUT = 80;
 const REPEATER_SPEED = 400;
@@ -23,12 +21,13 @@ gamectrl.on('connect', async (gamepad) => {
 		return !gamepad.pressed.button6 && !gamepad.pressed.button7;
 	}
 	function isSecondary() {
-		return !gamepad.pressed.button6 && gamepad.pressed.button7;
+		return gamepad.pressed.button6 && !gamepad.pressed.button7;
 	}
 
 	function UP_FUNCTION() {
 		if (isSecondary()) {
 			const selectedItem = app.selectedListItem;
+			console.log(selectedItem);
 			if (selectedItem) {
 				const moveButton =
 					selectedItem.querySelector<HTMLElement>('.move-up-button');
@@ -95,7 +94,7 @@ gamectrl.on('connect', async (gamepad) => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
 			}, REPEATER_SPEED);
-			DOWN_FUNCTION();
+			// DOWN_FUNCTION();
 		}, REPEATER_TIMEOUT);
 		DOWN_FUNCTION();
 	});
