@@ -105,6 +105,7 @@ export class AppShell extends LitElement {
 								: (() => {
 										try {
 											const url = new URL(item.url);
+											console.log(url);
 											return html`<md-icon slot="start"
 												><img src="${url.protocol}//${url.host}/favicon.ico"
 											/></md-icon>`;
