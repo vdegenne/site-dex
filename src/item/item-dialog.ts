@@ -5,7 +5,7 @@ import {withStyles} from 'lit-with-styles';
 import {state, query} from 'lit/decorators.js';
 import styles from './item-dialog.css?inline';
 import {bindInput} from 'relit';
-import {BookmarkOrFolder, store} from '../store.js';
+import {type BookmarkFolder, type BookmarkOrFolder, store} from '../store.js';
 import {confirm} from '../confirm.js';
 
 declare global {
@@ -115,7 +115,7 @@ export class ItemDialog extends LitElement {
 		if (this.isFolder) {
 			returnObject = {
 				title: this.title,
-				items: [],
+				items: (this.trackItem as BookmarkFolder).items,
 			};
 		} else {
 			returnObject = {
