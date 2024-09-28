@@ -72,7 +72,6 @@ gamectrl.on('connect', async (gamepad) => {
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
-				app.activePreviousItem();
 			}, REPEATER_SPEED);
 			// UP_FUNCTION()
 		}, REPEATER_TIMEOUT);
