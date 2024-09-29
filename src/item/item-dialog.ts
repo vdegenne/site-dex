@@ -115,7 +115,7 @@ export class ItemDialog extends LitElement {
 		if (this.isFolder) {
 			returnObject = {
 				title: this.title,
-				items: (this.trackItem as BookmarkFolder).items,
+				items: (this.trackItem as BookmarkFolder)?.items ?? [],
 			};
 		} else {
 			returnObject = {
