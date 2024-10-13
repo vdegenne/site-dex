@@ -5,12 +5,19 @@ import {sleep} from './utils.js';
 const REPEATER_TIMEOUT = 80;
 const REPEATER_SPEED = 400;
 
+let focus = true;
+
 let upKeyRepeaterTimeout: number;
 let upKeyRepeaterInterval: number;
 let downKeyRepeaterTimeout: number;
 let downKeyRepeaterInterval: number;
 
+window.addEventListener('focus', () => {
+	focus = true;
+});
+
 window.addEventListener('blur', () => {
+	focus = false;
 	clearTimeout(upKeyRepeaterTimeout);
 	clearInterval(upKeyRepeaterInterval);
 	clearTimeout(downKeyRepeaterTimeout);
@@ -56,6 +63,9 @@ gamectrl.on('connect', async (gamepad) => {
 	gamepad.axeThreshold = [0.4];
 
 	gamepad.before(XBoxButton.UP, () => {
+		if (!focus) {
+			return;
+		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
@@ -69,6 +79,9 @@ gamectrl.on('connect', async (gamepad) => {
 		clearInterval(upKeyRepeaterInterval);
 	});
 	gamepad.before(XBoxButton.DPAD_UP, () => {
+		if (!focus) {
+			return;
+		}
 		upKeyRepeaterTimeout = setTimeout(() => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
@@ -83,6 +96,9 @@ gamectrl.on('connect', async (gamepad) => {
 	});
 
 	gamepad.before(XBoxButton.LEFT_STICK_DOWN, () => {
+		if (!focus) {
+			return;
+		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
@@ -96,6 +112,9 @@ gamectrl.on('connect', async (gamepad) => {
 		clearInterval(downKeyRepeaterInterval);
 	});
 	gamepad.before(XBoxButton.DPAD_DOWN, () => {
+		if (!focus) {
+			return;
+		}
 		downKeyRepeaterTimeout = setTimeout(() => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
@@ -110,6 +129,9 @@ gamectrl.on('connect', async (gamepad) => {
 	});
 
 	gamepad.before(XBoxButton.B, () => {
+		if (!focus) {
+			return;
+		}
 		if (noTrigger()) {
 			const item = app.selectedListItem;
 			// @ts-ignore
@@ -118,6 +140,9 @@ gamectrl.on('connect', async (gamepad) => {
 	});
 
 	gamepad.before(XBoxButton.A, () => {
+		if (!focus) {
+			return;
+		}
 		window.history.back();
 	});
 });
