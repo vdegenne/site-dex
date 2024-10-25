@@ -104,6 +104,7 @@ class AppStore extends ReactiveController {
 	getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
 
 	getPathSelectedIndex(path: string) {
+		path = trimSlashes(path);
 		const info = this.selectedIndexMap.find((i) => i.path === path);
 		if (info) {
 			return info.index;

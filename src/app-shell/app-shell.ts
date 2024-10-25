@@ -1,4 +1,5 @@
 import {type MdList} from '@material/web/list/list.js';
+import {until} from 'lit/directives/until.js';
 import {LitElement, html} from 'lit';
 import {withStyles} from 'lit-with-styles';
 import {customElement, query} from 'lit/decorators.js';
@@ -101,8 +102,8 @@ export class AppShell extends LitElement {
 							?selected=${store.getPathSelectedIndex(pathname) === itemIndex}
 						>
 							${'items' in item
-								? html`<md-icon slot="start">folder</md-icon>`
-								: this.#renderFavicon(item.url)}
+								? html`<md-icon slot="start" fill>folder</md-icon>`
+								: until(this.renderFavicon(item.url))}
 							${item.title}
 
 							<md-icon-button
@@ -175,15 +176,25 @@ export class AppShell extends LitElement {
 		`;
 	}
 
-	#renderFavicon(url: string) {
+	async renderFavicon(url: string) {
 		try {
-			const _URL = new URL('/favicon.ico', url); // Appends `/favicon.ico` to the base URL
+			const _URL = new URL('/favicon.ico', url);
 			const src = _URL.toString();
-			console.log(src);
-			return html`<md-icon slot="start"><img src="${src}" /></md-icon>`;
-		} catch (error) {
-			console.log(error);
-			return 'snif';
+
+			// Create an Image element to check if the favicon exists
+			const image = new Image();
+			image.src = src;
+
+			// Return a promise that resolves once the image has loaded or failed
+			const imageExists = await new Promise((resolve) => {
+				image.onload = () => resolve(true); // Resolves to true if image loads successfully
+				image.onerror = () => resolve(false); // Resolves to false if there's an error loading
+			});
+
+			// Return the icon if the image exists, otherwise return an empty string
+			return imageExists ? html`<md-icon slot="start">${image}</md-icon>` : '';
+		} catch (_error) {
+			return ''; // Return empty if there's an error (invalid URL, etc.)
 		}
 	}
 }
