@@ -127,6 +127,13 @@ class AppStore extends ReactiveController {
 		const numberOfItems = currentFolder.items.length;
 		const currentIndex = this.getPathSelectedIndex(currentPath);
 		const nextIndex = (currentIndex - 1 + numberOfItems) % numberOfItems;
+		console.log(
+			currentPath,
+			currentFolder,
+			numberOfItems,
+			currentIndex,
+			nextIndex,
+		);
 		this.setPathSelectedIndex(currentPath, nextIndex);
 	}
 	selectNextItem() {
@@ -135,6 +142,13 @@ class AppStore extends ReactiveController {
 		const numberOfItems = currentFolder.items.length;
 		const currentIndex = this.getPathSelectedIndex(currentPath);
 		const nextIndex = (currentIndex + 1) % numberOfItems;
+		console.log(
+			currentPath,
+			currentFolder,
+			numberOfItems,
+			currentIndex,
+			nextIndex,
+		);
 		this.setPathSelectedIndex(currentPath, nextIndex);
 	}
 
