@@ -79,10 +79,13 @@ export class AppShell extends LitElement {
 					(item) => item.title,
 					(item, itemIndex) => {
 						const href =
-							'url' in item ? item.url : [...pathParts, item.title].join('/');
+							'url' in item
+								? item.url
+								: `#${[...pathParts, item.title].join('/')}`;
+
 						return html`<md-list-item
 							target="${'url' in item ? '_blank' : ''}"
-							href="#${href}"
+							href="${href}"
 							@pointerenter=${(e: Event) => {
 								const target = e.target as HTMLElement;
 								target
