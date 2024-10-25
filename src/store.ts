@@ -25,6 +25,8 @@ class AppStore extends ReactiveController {
 	};
 	selectedLeaf = this.structure;
 
+	@state() selectedIndexMap: {path: string; index: number}[] = [];
+
 	firstUpdated() {
 		const onHashChange = async () => {
 			let leaf = (this.selectedLeaf = this.structure);
@@ -43,9 +45,9 @@ class AppStore extends ReactiveController {
 				this.selectedLeaf = leaf;
 			}
 			this.requestUpdate();
-			await this.updateComplete;
-			await app.updateComplete;
-			app.selectFirst();
+			// await this.updateComplete;
+			// await app.updateComplete;
+			// app.selectFirst();
 		};
 		window.addEventListener('hashchange', onHashChange);
 		onHashChange();
@@ -84,7 +86,64 @@ class AppStore extends ReactiveController {
 		this.requestUpdate();
 	}
 
-	// getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
+	getItemFromPath(path: string, from = this.structure) {
+		const parts = path.split('/').filter((p) => p);
+		for (const part of parts) {
+			const nextLeaf = from.items.find((i) => i.title === part);
+			if (nextLeaf === undefined) {
+				// can't continue
+				return null;
+			}
+			from = nextLeaf as BookmarkFolder;
+		}
+		return from;
+	}
+
+	// TODO: to implement
+	getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
+
+	getPathSelectedIndex(path: string) {
+		const info = this.selectedIndexMap.find((i) => i.path === path);
+		if (info) {
+			return info.index;
+		} else {
+			return 0;
+		}
+	}
+	setPathSelectedIndex(path: string, index: number) {
+		let info = this.selectedIndexMap.find((i) => i.path === path);
+		if (!info) {
+			info = {path, index};
+			this.selectedIndexMap.push(info);
+		} else {
+			info.index = index;
+		}
+		this.selectedIndexMap = [...this.selectedIndexMap];
+	}
+
+	selectPreviousItem() {
+		const currentPath = window.location.hash.slice(1);
+		const currentFolder = this.getItemFromPath(currentPath);
+		const numberOfItems = currentFolder.items.length;
+		const currentIndex = this.getPathSelectedIndex(currentPath);
+		const nextIndex = (currentIndex + 1) % numberOfItems;
+		this.setPathSelectedIndex(currentPath, nextIndex);
+	}
+	selectNextItem() {
+		const currentPath = window.location.hash.slice(1);
+		const currentFolder = this.getItemFromPath(currentPath);
+		const numberOfItems = currentFolder.items.length;
+		const currentIndex = this.getPathSelectedIndex(currentPath);
+		const nextIndex = (currentIndex - 1 + numberOfItems) % numberOfItems;
+		this.setPathSelectedIndex(currentPath, nextIndex);
+	}
+
+	goUp() {
+		const hash = window.location.hash;
+		const parts = hash.split('/').filter((p) => p);
+		parts.pop();
+		window.location.hash = parts.join('/');
+	}
 }
 
 export const store = new AppStore();

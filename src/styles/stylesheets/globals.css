@@ -4,10 +4,10 @@
 :root {
 	/* --md-icon-font: 'Material Symbols Rounded'; */
 	--md-list-container-color: transparent;
+	background-color: var(--md-sys-color-surface-container);
+	color: var(--md-sys-color-on-surface);
 }
 
 body {
 	margin: 0;
-	background-color: var(--md-sys-color-surface-container);
-	color: var(--md-sys-color-on-surface);
 }

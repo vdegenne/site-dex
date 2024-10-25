@@ -12,3 +12,7 @@
 	right: 0;
 	margin: 24px;
 }
+
+md-list-item[selected] {
+	background-color: var(--md-sys-color-surface-container-highest);
+}

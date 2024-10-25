@@ -1,6 +1,7 @@
 import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
 import {sleep} from './utils.js';
+import {store} from './store.js';
 
 const REPEATER_TIMEOUT = 80;
 const REPEATER_SPEED = 400;
@@ -42,7 +43,7 @@ gamectrl.on('connect', async (gamepad) => {
 				// selectedItem.focus();
 			}
 		} else {
-			app.activePreviousItem();
+			store.selectPreviousItem();
 		}
 	}
 	async function DOWN_FUNCTION() {
@@ -56,7 +57,7 @@ gamectrl.on('connect', async (gamepad) => {
 				selectedItem.focus();
 			}
 		} else {
-			app.activeNextItem();
+			store.selectNextItem();
 		}
 	}
 
@@ -143,6 +144,7 @@ gamectrl.on('connect', async (gamepad) => {
 		if (!focus) {
 			return;
 		}
-		window.history.back();
+		// window.history.back();
+		store.goUp();
 	});
 });

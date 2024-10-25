@@ -28,17 +28,14 @@ export class AppShell extends LitElement {
 	getListItems() {
 		return this.list.items as MdListItem[];
 	}
-	get selectedListItem(): MdListItem {
-		return this.getListItems().find((el) => el.tabIndex === 0);
+	get selectedListItem() {
+		// return this.getListItems().find((el) => el.tabIndex === 0);
+		return this.list.items.find((item) => item.hasAttribute('selected'));
 	}
 
 	async firstUpdated() {
 		store.bind(this);
 		materialShellLoadingOff.call(this);
-	}
-
-	updated() {
-		// this.selectFirst();
 	}
 
 	async selectFirst() {
@@ -57,9 +54,11 @@ export class AppShell extends LitElement {
 		if (!store.selectedLeaf) {
 			return html`Not found or deleted.`;
 		}
+		const pathname = window.location.hash;
+
 		return html`
 			<md-list>
-				${window.location.hash
+				${pathname
 					? (() => {
 							const hash = window.location.hash
 								.slice(1)
@@ -80,9 +79,8 @@ export class AppShell extends LitElement {
 				${repeat(
 					store.selectedLeaf.items,
 					(item) => item.title,
-					(item) => {
+					(item, itemIndex) => {
 						return html`<md-list-item
-							type="button"
 							target="${'url' in item ? '_blank' : ''}"
 							href="${'url' in item
 								? item.url
@@ -99,6 +97,7 @@ export class AppShell extends LitElement {
 									.querySelectorAll('md-icon-button')
 									.forEach((el) => el.setAttribute('transparent', ''));
 							}}
+							?selected=${store.getPathSelectedIndex(pathname) === itemIndex}
 						>
 							${'items' in item
 								? html`<md-icon slot="start">folder</md-icon>`
@@ -182,13 +181,6 @@ export class AppShell extends LitElement {
 				</md-fab>
 			</div>
 		`;
-	}
-
-	activePreviousItem() {
-		this.list.activatePreviousItem();
-	}
-	activeNextItem() {
-		this.list.activateNextItem();
 	}
 }
 
