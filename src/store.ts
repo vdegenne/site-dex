@@ -1,6 +1,7 @@
 import {ReactiveController, state} from '@snar/lit';
 import {saveToLocalStorage} from 'snar-save-to-local-storage';
 import {app} from './app-shell/app-shell.js';
+import {trimSlashes} from './utils.js';
 
 export interface Bookmark {
 	title: string;
@@ -122,33 +123,33 @@ class AppStore extends ReactiveController {
 	}
 
 	selectPreviousItem() {
-		const currentPath = window.location.hash.slice(1);
+		const currentPath = trimSlashes(window.location.hash.slice(1));
 		const currentFolder = this.getItemFromPath(currentPath);
 		const numberOfItems = currentFolder.items.length;
 		const currentIndex = this.getPathSelectedIndex(currentPath);
 		const nextIndex = (currentIndex - 1 + numberOfItems) % numberOfItems;
-		console.log(
-			currentPath,
-			currentFolder,
-			numberOfItems,
-			currentIndex,
-			nextIndex,
-		);
+		// console.log(
+		// 	currentPath,
+		// 	currentFolder,
+		// 	numberOfItems,
+		// 	currentIndex,
+		// 	nextIndex,
+		// );
 		this.setPathSelectedIndex(currentPath, nextIndex);
 	}
 	selectNextItem() {
-		const currentPath = window.location.hash.slice(1);
+		const currentPath = trimSlashes(window.location.hash.slice(1));
 		const currentFolder = this.getItemFromPath(currentPath);
 		const numberOfItems = currentFolder.items.length;
 		const currentIndex = this.getPathSelectedIndex(currentPath);
 		const nextIndex = (currentIndex + 1) % numberOfItems;
-		console.log(
-			currentPath,
-			currentFolder,
-			numberOfItems,
-			currentIndex,
-			nextIndex,
-		);
+		// console.log(
+		// 	currentPath,
+		// 	currentFolder,
+		// 	numberOfItems,
+		// 	currentIndex,
+		// 	nextIndex,
+		// );
 		this.setPathSelectedIndex(currentPath, nextIndex);
 	}
 

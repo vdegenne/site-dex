@@ -69,3 +69,7 @@ export async function getElementInTree(
 		}
 	}
 }
+
+export function trimSlashes(input: string) {
+	return input.replace(/^(\/)*|(\/)*$/g, '');
+}

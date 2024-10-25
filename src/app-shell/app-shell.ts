@@ -51,6 +51,7 @@ export class AppShell extends LitElement {
 	}
 
 	render() {
+		console.log('rendered');
 		if (!store.selectedLeaf) {
 			return html`Not found or deleted.`;
 		}
