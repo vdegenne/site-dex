@@ -101,16 +101,7 @@ export class AppShell extends LitElement {
 						>
 							${'items' in item
 								? html`<md-icon slot="start">folder</md-icon>`
-								: (() => {
-										try {
-											const url = new URL(item.url);
-											return html`<md-icon slot="start"
-												><img src="${url.protocol}//${url.host}/favicon.ico"
-											/></md-icon>`;
-										} catch (e) {
-											console.log(e);
-										}
-									})()}
+								: this.#renderFavicon(item.url)}
 							${item.title}
 
 							<md-icon-button
@@ -181,6 +172,18 @@ export class AppShell extends LitElement {
 				</md-fab>
 			</div>
 		`;
+	}
+
+	#renderFavicon(url: string) {
+		try {
+			const _URL = new URL(url);
+			return html`<md-icon slot="start"
+				><img src="${_URL.protocol}//${_URL.host}/favicon.ico"
+			/></md-icon>`;
+		} catch (error) {
+			console.log(error);
+			return 'snif';
+		}
 	}
 }
 
