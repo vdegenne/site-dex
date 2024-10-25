@@ -52,25 +52,21 @@ export class AppShell extends LitElement {
 	}
 
 	render() {
-		console.log('rendered');
 		if (!store.selectedLeaf) {
 			return html`Not found or deleted.`;
 		}
-		const pathname = window.location.hash;
+		const path = window.location.hash.slice(1);
+		const pathParts = path.split('/').filter((p) => p);
 
 		return html`
 			<md-list>
-				${pathname
+				${path
 					? (() => {
-							const hash = window.location.hash
-								.slice(1)
-								.split('/')
-								.slice(0, -2)
-								.join('/');
+							const previousPath = pathParts.slice(0, -1).join('/');
 							return html`
-								<md-list-item type="button" href="#${hash}${hash ? '/' : ''}">
+								<md-list-item type="button" href="#${previousPath}">
 									<md-icon slot="start">arrow_back</md-icon>
-									${hash}
+									${previousPath || '🏠'}
 								</md-list-item>
 							`;
 						})()
@@ -82,11 +78,11 @@ export class AppShell extends LitElement {
 					store.selectedLeaf.items,
 					(item) => item.title,
 					(item, itemIndex) => {
+						const href =
+							'url' in item ? item.url : [...pathParts, item.title].join('/');
 						return html`<md-list-item
 							target="${'url' in item ? '_blank' : ''}"
-							href="${'url' in item
-								? item.url
-								: `#${window.location.hash.slice(1)}${item.title}/`}"
+							href="#${href}"
 							@pointerenter=${(e: Event) => {
 								const target = e.target as HTMLElement;
 								target
@@ -99,7 +95,7 @@ export class AppShell extends LitElement {
 									.querySelectorAll('md-icon-button')
 									.forEach((el) => el.setAttribute('transparent', ''));
 							}}
-							?selected=${store.getPathSelectedIndex(pathname) === itemIndex}
+							?selected=${store.getPathSelectedIndex(path) === itemIndex}
 						>
 							${'items' in item
 								? html`<md-icon slot="start" fill>folder</md-icon>`
