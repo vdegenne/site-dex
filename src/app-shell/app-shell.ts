@@ -177,9 +177,9 @@ export class AppShell extends LitElement {
 	#renderFavicon(url: string) {
 		try {
 			const _URL = new URL(url);
-			return html`<md-icon slot="start"
-				><img src="${_URL.protocol}//${_URL.host}/favicon.ico"
-			/></md-icon>`;
+			const src = `${_URL.protocol}//${_URL.host}/favicon.ico`;
+			console.log(src);
+			return html`<md-icon slot="start"><img src="${src}" /></md-icon>`;
 		} catch (error) {
 			console.log(error);
 			return 'snif';
