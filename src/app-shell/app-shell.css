@@ -13,6 +13,10 @@
 	margin: 24px;
 }
 
+md-list-item {
+	--md-ripple-hover-opacity: 0;
+}
+
 md-list-item[selected] {
 	background-color: var(--md-sys-color-surface-container-highest);
 }

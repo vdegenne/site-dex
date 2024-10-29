@@ -3,8 +3,8 @@ import {app} from './app-shell/app-shell.js';
 import {sleep} from './utils.js';
 import {store} from './store.js';
 
-const REPEATER_TIMEOUT = 80;
-const REPEATER_SPEED = 400;
+const REPEATER_TIMEOUT = 200;
+const REPEATER_SPEED = 200;
 
 let focus = true;
 
@@ -71,7 +71,7 @@ gamectrl.on('connect', async (gamepad) => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
 			}, REPEATER_SPEED);
-			// app.activePreviousItem();
+			UP_FUNCTION();
 		}, REPEATER_TIMEOUT);
 		UP_FUNCTION();
 	});
@@ -87,7 +87,7 @@ gamectrl.on('connect', async (gamepad) => {
 			upKeyRepeaterInterval = setInterval(() => {
 				UP_FUNCTION();
 			}, REPEATER_SPEED);
-			// UP_FUNCTION()
+			UP_FUNCTION();
 		}, REPEATER_TIMEOUT);
 		UP_FUNCTION();
 	});
@@ -104,7 +104,7 @@ gamectrl.on('connect', async (gamepad) => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
 			}, REPEATER_SPEED);
-			// DOWN_FUNCTION();
+			DOWN_FUNCTION();
 		}, REPEATER_TIMEOUT);
 		DOWN_FUNCTION();
 	});
@@ -120,7 +120,7 @@ gamectrl.on('connect', async (gamepad) => {
 			downKeyRepeaterInterval = setInterval(() => {
 				DOWN_FUNCTION();
 			}, REPEATER_SPEED);
-			// DOWN_FUNCTION()
+			DOWN_FUNCTION();
 		}, REPEATER_TIMEOUT);
 		DOWN_FUNCTION();
 	});
