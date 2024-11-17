@@ -35,30 +35,32 @@ gamectrl.on('connect', async (gamepad) => {
 
 	function UP_FUNCTION() {
 		if (isSecondary()) {
-			const selectedItem = app.selectedListItem;
-			if (selectedItem) {
-				const moveButton =
-					selectedItem.querySelector<HTMLElement>('.move-up-button');
-				moveButton?.click();
-				// selectedItem.focus();
-			}
+			store.moveItemUp();
+			// const selectedItem = app.selectedListItem;
+			// if (selectedItem) {
+			// 	const moveButton =
+			// 		selectedItem.querySelector<HTMLElement>('.move-up-button');
+			// 	moveButton?.click();
+			// 	// selectedItem.focus();
+			// }
 		} else {
-			store.selectPreviousItem();
 		}
+		store.selectPreviousItem();
 	}
 	async function DOWN_FUNCTION() {
 		if (isSecondary()) {
-			const selectedItem = app.selectedListItem;
-			if (selectedItem) {
-				const moveButton =
-					selectedItem.querySelector<HTMLElement>('.move-down-button');
-				moveButton?.click();
-				await sleep(50);
-				selectedItem.focus();
-			}
+			store.moveItemDown();
+			// const selectedItem = app.selectedListItem;
+			// if (selectedItem) {
+			// 	const moveButton =
+			// 		selectedItem.querySelector<HTMLElement>('.move-down-button');
+			// 	moveButton?.click();
+			// 	await sleep(50);
+			// 	selectedItem.focus();
+			// }
 		} else {
-			store.selectNextItem();
 		}
+		store.selectNextItem();
 	}
 
 	gamepad.axeThreshold = [0.4];

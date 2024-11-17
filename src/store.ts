@@ -21,7 +21,11 @@ class AppStore extends ReactiveController {
 		title: 'root',
 		items: [
 			{title: 'X', url: 'https://x.com'},
-			{title: 'sub', items: []},
+			{title: 'sub1', items: []},
+			{title: 'sub2', items: []},
+			{title: 'sub3', items: []},
+			{title: 'sub4', items: []},
+			{title: 'sub5', items: []},
 		],
 	};
 	selectedLeaf = this.structure;
@@ -64,7 +68,10 @@ class AppStore extends ReactiveController {
 		this.requestUpdate();
 	}
 
-	moveItemUp(item: BookmarkOrFolder, folder = this.selectedLeaf) {
+	moveItemUp(
+		item: BookmarkOrFolder = this.currentItem,
+		folder = this.selectedLeaf,
+	) {
 		const index = folder.items.indexOf(item);
 		if (index <= 0) {
 			return;
@@ -75,7 +82,10 @@ class AppStore extends ReactiveController {
 		folder.items[index] = switchElement;
 		this.requestUpdate();
 	}
-	moveItemDown(item: BookmarkOrFolder, folder = this.selectedLeaf) {
+	moveItemDown(
+		item: BookmarkOrFolder = this.currentItem,
+		folder = this.selectedLeaf,
+	) {
 		const index = folder.items.indexOf(item);
 		if (index === -1 || index === folder.items.length - 1) {
 			return;
@@ -103,7 +113,7 @@ class AppStore extends ReactiveController {
 	// TODO: to implement
 	getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
 
-	getPathSelectedIndex(path: string) {
+	getPathSelectedIndex(path = window.location.hash.slice(1)) {
 		path = trimSlashes(path);
 		const info = this.selectedIndexMap.find((i) => i.path === path);
 		if (info) {
@@ -121,6 +131,13 @@ class AppStore extends ReactiveController {
 			info.index = index;
 		}
 		this.selectedIndexMap = [...this.selectedIndexMap];
+	}
+
+	get currentItem() {
+		const index = this.getPathSelectedIndex();
+		const currentPath = trimSlashes(window.location.hash.slice(1));
+		const currentFolder = this.getItemFromPath(currentPath);
+		return currentFolder.items[index];
 	}
 
 	selectPreviousItem() {
