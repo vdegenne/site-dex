@@ -1,10 +1,9 @@
 import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
-import {sleep} from './utils.js';
 import {store} from './store.js';
 
-const REPEATER_TIMEOUT = 200;
-const REPEATER_SPEED = 200;
+const REPEATER_TIMEOUT = 300;
+const REPEATER_SPEED = 150;
 
 let focus = true;
 
