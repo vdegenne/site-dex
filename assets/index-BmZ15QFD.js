@@ -1,4 +1,4 @@
-import{Q as b,l as m,w as f,E as p,q as k,D as y}from"./index-CFT3AG3a.js";import{s as d}from"./item-dialog-B97eKhjD.js";function P({headline:i,content:o,cancelButton:t,confirmButton:a,blockScrimClick:w=!1,blockEscapeKey:g=!1,onDialogReady:c,styles:v}){return new Promise(async(h,A)=>{const s=document.createElement("div");let u=Promise.resolve(),$=Promise.resolve(),n=!1;b(m`
+import{Q as b,k as m,l as f,x as p,f as k,D as y}from"./index-CRquZ18T.js";import{s as d}from"./item-dialog-D7u7aG7Y.js";function P({headline:i,content:o,cancelButton:t,confirmButton:a,blockScrimClick:w=!1,blockEscapeKey:g=!1,onDialogReady:c,styles:v}){return new Promise(async(h,A)=>{const s=document.createElement("div");let u=Promise.resolve(),$=Promise.resolve(),n=!1;b(m`
 				<md-dialog
 					?block-scrim-click="${w}"
 					?block-escape-key="${g}"
@@ -38,4 +38,4 @@ import{Q as b,l as m,w as f,E as p,q as k,D as y}from"./index-CFT3AG3a.js";impor
 								`})():y}
 							</div>
 					  `:null}
-			`,r),r.$={confirmButton:null,cancelButton:null},r.querySelectorAll("[id]").forEach(e=>{r.$[e.getAttribute("id")]=e}),await r.updateComplete,await(c==null?void 0:c(r)),r.show()})}async function E({headline:i="Are you sure?",content:o="Are you sure to perform this action?",cancelButton:t={},confirmButton:a={}}={}){return await P({headline:i,content(){return o},confirmButton:a,cancelButton:t})}export{E as materialConfirm,P as materialDialog};
+			`,r),r.$={confirmButton:null,cancelButton:null},r.querySelectorAll("[id]").forEach(e=>{r.$[e.getAttribute("id")]=e}),await r.updateComplete,await(c==null?void 0:c(r)),r.show()})}async function x({headline:i="Are you sure?",content:o="Are you sure to perform this action?",cancelButton:t={},confirmButton:a={}}={}){return await P({headline:i,content(){return o},confirmButton:a,cancelButton:t})}export{x as materialConfirm,P as materialDialog};
