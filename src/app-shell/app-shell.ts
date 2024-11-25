@@ -11,6 +11,10 @@ import {getItemDialog} from '../imports.js';
 import {store} from '../store.js';
 import {copyToClipboard} from '../utils.js';
 import styles from './app-shell.css?inline';
+import {
+	renderColorPicker,
+	renderThemeElements,
+} from '../styles/theme-elements.js';
 
 declare global {
 	interface Window {
@@ -105,8 +109,14 @@ export class AppShell extends LitElement {
 								?selected=${store.getPathSelectedIndex(path) === itemIndex}
 							>
 								${'items' in item
-									? html`<md-icon slot="start" fill>folder</md-icon>`
-									: until(this.renderFavicon(item.url))}
+									? html`<md-icon fill slot="start" class="ml-8"
+											>folder</md-icon
+										>`
+									: html`<md-filled-icon-button slot="start"
+											>${until(
+												this.renderFavicon(item.url),
+											)}</md-filled-icon-button
+										>`}
 								${item.title}
 
 								<md-icon-button
@@ -154,6 +164,7 @@ export class AppShell extends LitElement {
 				</md-list>
 
 				<div id="fabs">
+          ${renderColorPicker()}
 					<md-fab
 						variant="small"
 						@click=${async () => {
@@ -196,7 +207,9 @@ export class AppShell extends LitElement {
 			});
 
 			// Return the icon if the image exists, otherwise return an empty string
-			return imageExists ? html`<md-icon slot="start">${image}</md-icon>` : '';
+			return imageExists
+				? html`<md-icon>${image}</md-icon>`
+				: html`<md-icon>language</md-icon>`;
 		} catch (_error) {
 			return ''; // Return empty if there's an error (invalid URL, etc.)
 		}

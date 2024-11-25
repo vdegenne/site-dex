@@ -26,7 +26,7 @@ class ThemeStore extends ReactiveController {
 			this.themeColor,
 			ThemeManager.appliedColorScheme === 'dark',
 			'vibrant',
-			0
+			0,
 		);
 		applyTheme(document, theme!);
 	}
