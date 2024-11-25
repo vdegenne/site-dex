@@ -1,46 +1,69 @@
 {
-	"name": "site-dex",
-	"version": "1.0.0",
-	"description": "a dex for sites",
-	"type": "module",
-	"author": "Valentin Degenne <vdegenne@gmail.com>",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": ""
-	},
-	"devDependencies": {
-		"@material/web": "^2.2.0",
-		"@snar/lit": "^1.6.0",
-		"@vdegenne/about-dialog": "^0.4.2",
-		"@vdegenne/material-color-helpers": "^1.10.0",
-		"custom-element-decorator": "^0.6.0",
-		"esm-gamecontroller.js": "^1.0.4",
-		"lit": "^3.2.1",
-		"lit-with-styles": "^2.1.3",
-		"material-3-prompt-dialog": "^1.0.1",
-		"material-shell": "^1.2.7",
-		"postcss": "^8.4.47",
-		"relit": "^2.6.0",
-		"rollup-plugin-material-all": "^1.2.2",
-		"snar": "^2.2.0",
-		"snar-save-to-local-storage": "^1.0.1",
-		"tailwindcss": "^3.4.14",
-		"toastit": "^0.1.0",
-		"vite": "^5.4.10",
-		"vite-plugin-mdicon2svg": "^0.0.4",
-		"wireit": "^0.14.9"
-	},
-	"scripts": {
-		"dev": "wireit",
-		"build": "wireit"
-	},
-	"wireit": {
-		"dev": {
-			"command": "vite --host"
-		},
-		"build": {
-			"command": "vite build"
-		}
-	}
+  "name": "site-dex",
+  "version": "1.0.0",
+  "description": "a dex for sites",
+  "type": "module",
+  "author": "Valentin Degenne <vdegenne@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
+    "@material/web": "^2.2.0",
+    "@snar/lit": "^1.6.0",
+    "@vdegenne/about-dialog": "^0.4.2",
+    "@vdegenne/material-color-helpers": "^1.10.0",
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "custom-element-decorator": "^0.6.0",
+    "esm-gamecontroller.js": "^1.0.4",
+    "lit": "^3.2.1",
+    "lit-with-styles": "^2.1.3",
+    "material-3-prompt-dialog": "^1.0.1",
+    "material-shell": "^1.2.7",
+    "postcss": "^8.4.47",
+    "relit": "^2.6.0",
+    "rollup-plugin-material-all": "^1.2.2",
+    "snar": "^2.2.0",
+    "snar-save-to-local-storage": "^1.0.1",
+    "tailwindcss": "^3.4.14",
+    "toastit": "^0.1.0",
+    "vite": "^5.4.10",
+    "vite-plugin-mdicon2svg": "^0.0.4",
+    "vite-plugin-pwa": "^0.21.0",
+    "wireit": "^0.14.9"
+  },
+  "scripts": {
+    "dev": "wireit",
+    "build": "wireit",
+    "pwa-assets": "wireit"
+  },
+  "wireit": {
+    "dev": {
+      "command": "vite --host",
+      "dependencies": [
+        "pwa-assets"
+      ]
+    },
+    "build": {
+      "command": "vite build",
+      "dependencies": [
+        "pwa-assets"
+      ]
+    },
+    "pwa-assets": {
+      "command": "pwa-assets-generator --preset minimal-2023 --html.preset 2023 public/logo.svg",
+      "files": [
+        "public/logo.svg"
+      ],
+      "output": [
+        "public/pwa-64x64.png",
+        "public/pwa-192x192.png",
+        "public/pwa-512x512.png",
+        "public/maskable-icon-512x512.png",
+        "public/apple-touch-icon-180x180.png",
+        "public/favicon.ico"
+      ]
+    }
+  }
 }
