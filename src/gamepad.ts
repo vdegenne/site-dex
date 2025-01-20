@@ -6,7 +6,6 @@ import gamectrl, {
 } from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
 import {store} from './store.js';
-import toast from 'toastit';
 
 const REPEATER_TIMEOUT = 300;
 const REPEATER_SPEED = 150;
