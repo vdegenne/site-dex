@@ -1,6 +1,12 @@
-import gamectrl, {XBoxButton} from 'esm-gamecontroller.js';
+import gamectrl, {
+	getMode,
+	Modes,
+	setStateGamepad,
+	XBoxButton,
+} from 'esm-gamecontroller.js';
 import {app} from './app-shell/app-shell.js';
 import {store} from './store.js';
+import toast from 'toastit';
 
 const REPEATER_TIMEOUT = 300;
 const REPEATER_SPEED = 150;
@@ -25,6 +31,8 @@ window.addEventListener('blur', () => {
 });
 
 gamectrl.on('connect', async (gamepad) => {
+	setStateGamepad(gamepad);
+
 	function noTrigger() {
 		return !gamepad.pressed.button6 && !gamepad.pressed.button7;
 	}
@@ -130,14 +138,25 @@ gamectrl.on('connect', async (gamepad) => {
 		clearInterval(downKeyRepeaterInterval);
 	});
 
+	gamepad.before(XBoxButton.LEFT_TRIGGER, () => {
+		app._blank = false;
+	});
+	gamepad.after(XBoxButton.LEFT_TRIGGER, () => {
+		app._blank = true;
+	});
+
 	gamepad.before(XBoxButton.B, () => {
 		if (!focus) {
 			return;
 		}
-		if (noTrigger()) {
-			const item = app.selectedListItem;
-			// @ts-ignore
-			item?.listItemRoot.click();
+		const mode = getMode();
+		switch (mode) {
+			case Modes.NORMAL:
+			case Modes.PRIMARY:
+				const item = app.selectedListItem;
+				// @ts-ignore
+				item?.listItemRoot.click();
+				break;
 		}
 	});
 

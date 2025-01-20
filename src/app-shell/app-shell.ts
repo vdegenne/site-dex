@@ -2,19 +2,16 @@ import {type MdListItem} from '@material/web/all.js';
 import {type MdList} from '@material/web/list/list.js';
 import {LitElement, html} from 'lit';
 import {withStyles} from 'lit-with-styles';
-import {customElement, query} from 'lit/decorators.js';
+import {customElement, query, state} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {until} from 'lit/directives/until.js';
 import {materialShellLoadingOff} from 'material-shell';
 import toast from 'toastit';
 import {getItemDialog} from '../imports.js';
 import {store} from '../store.js';
+import {renderColorPicker} from '../styles/theme-elements.js';
 import {copyToClipboard} from '../utils.js';
 import styles from './app-shell.css?inline';
-import {
-	renderColorPicker,
-	renderThemeElements,
-} from '../styles/theme-elements.js';
 
 declare global {
 	interface Window {
@@ -29,6 +26,8 @@ declare global {
 @withStyles(styles)
 export class AppShell extends LitElement {
 	@query('md-list') list!: MdList;
+
+	@state() _blank = true;
 
 	getListItems() {
 		return this.list.items as MdListItem[];
@@ -91,8 +90,10 @@ export class AppShell extends LitElement {
 									? item.url
 									: `#${[...pathParts, item.title].join('/')}`;
 
+							const _blank = 'url' in item && this._blank;
+
 							return html`<md-list-item
-								target="${'url' in item ? '_blank' : ''}"
+								target="${_blank ? '_blank' : ''}"
 								href="${href}"
 								@pointerenter=${(e: Event) => {
 									const target = e.target as HTMLElement;
