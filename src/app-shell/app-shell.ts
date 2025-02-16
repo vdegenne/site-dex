@@ -27,7 +27,7 @@ declare global {
 export class AppShell extends LitElement {
 	@query('md-list') list!: MdList;
 
-	@state() _blank = true;
+	@state() _blank = false;
 
 	getListItems() {
 		return this.list.items as MdListItem[];

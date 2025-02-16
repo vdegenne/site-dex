@@ -138,10 +138,10 @@ gamectrl.on('connect', async (gamepad) => {
 	});
 
 	gamepad.before(XBoxButton.LEFT_TRIGGER, () => {
-		app._blank = false;
+		app._blank = true;
 	});
 	gamepad.after(XBoxButton.LEFT_TRIGGER, () => {
-		app._blank = true;
+		app._blank = false;
 	});
 
 	gamepad.before(XBoxButton.B, () => {
