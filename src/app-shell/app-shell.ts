@@ -10,7 +10,7 @@ import toast from 'toastit';
 import {getItemDialog} from '../imports.js';
 import {store} from '../store.js';
 import {renderColorPicker} from '../styles/theme-elements.js';
-import {copyToClipboard} from '../utils.js';
+import {copyToClipboard, preventDefault} from '../utils.js';
 import styles from './app-shell.css?inline';
 
 declare global {
@@ -92,74 +92,77 @@ export class AppShell extends LitElement {
 
 							const _blank = 'url' in item && this._blank;
 
-							return html`<md-list-item
-								target="${_blank ? '_blank' : ''}"
-								href="${href}"
-								@pointerenter=${(e: Event) => {
-									const target = e.target as HTMLElement;
-									target
-										.querySelectorAll('md-icon-button')
-										.forEach((el) => el.removeAttribute('transparent'));
-								}}
-								@pointerleave=${(e: Event) => {
-									const target = e.target as HTMLElement;
-									target
-										.querySelectorAll('md-icon-button')
-										.forEach((el) => el.setAttribute('transparent', ''));
-								}}
-								?selected=${store.getPathSelectedIndex(path) === itemIndex}
-							>
-								${'items' in item
-									? html`<md-icon fill slot="start" class="ml-8"
-											>folder</md-icon
-										>`
-									: html`<md-filled-icon-button slot="start"
-											>${until(
-												this.renderFavicon(item.url),
-											)}</md-filled-icon-button
-										>`}
-								${item.title}
-
-								<md-icon-button
-									transparent
-									slot="end"
-									class="move-up-button"
-									@click=${async (e: PointerEvent) => {
-										e.preventDefault();
-										store.moveItemUp(item);
+							return html`<!-- -->
+								<md-list-item
+									target="${_blank ? '_blank' : ''}"
+									href="${href}"
+									@pointerenter=${(e: Event) => {
+										const target = e.target as HTMLElement;
+										target
+											.querySelectorAll('md-icon-button')
+											.forEach((el) => el.removeAttribute('transparent'));
 									}}
-								>
-									<md-icon>arrow_upward</md-icon>
-								</md-icon-button>
-
-								<md-icon-button
-									transparent
-									slot="end"
-									class="move-down-button"
-									@click=${async (e: PointerEvent) => {
-										e.preventDefault();
-										store.moveItemDown(item);
+									@pointerleave=${(e: Event) => {
+										const target = e.target as HTMLElement;
+										target
+											.querySelectorAll('md-icon-button')
+											.forEach((el) => el.setAttribute('transparent', ''));
 									}}
+									?selected=${store.getPathSelectedIndex(path) === itemIndex}
 								>
-									<md-icon>arrow_downward</md-icon>
-								</md-icon-button>
+									${'items' in item
+										? html`<md-icon fill slot="start" class="ml-8"
+												>folder</md-icon
+											>`
+										: html`<md-filled-icon-button slot="start"
+												>${until(
+													this.renderFavicon(item.url),
+												)}</md-filled-icon-button
+											>`}
+									${item.title}
 
-								<md-icon-button
-									transparent
-									slot="end"
-									@click=${async (e: PointerEvent) => {
-										e.preventDefault();
-										try {
-											const dialog = await getItemDialog();
-											const modifiedItem = await dialog.show(item);
-											Object.assign(item, modifiedItem);
-											store.requestUpdate();
-										} catch {}
-									}}
-								>
-									<md-icon>edit</md-icon>
-								</md-icon-button>
-							</md-list-item>`;
+									<md-icon-button
+										transparent
+										slot="end"
+										class="move-up-button"
+										@click=${async (e: PointerEvent) => {
+											e.preventDefault();
+											store.moveItemUp(item);
+										}}
+									>
+										<md-icon>arrow_upward</md-icon>
+									</md-icon-button>
+
+									<md-icon-button
+										transparent
+										slot="end"
+										class="move-down-button"
+										@click=${async (e: PointerEvent) => {
+											e.preventDefault();
+											store.moveItemDown(item);
+										}}
+									>
+										<md-icon>arrow_downward</md-icon>
+									</md-icon-button>
+
+									<md-icon-button
+										transparent
+										slot="end"
+										@pointerdown=${(e: Event) => e.stopPropagation()}
+										@click=${async (e: PointerEvent) => {
+											e.stopPropagation();
+											e.preventDefault();
+											try {
+												const dialog = await getItemDialog();
+												const modifiedItem = await dialog.show(item);
+												Object.assign(item, modifiedItem);
+												store.requestUpdate();
+											} catch {}
+										}}
+									>
+										<md-icon>edit</md-icon>
+									</md-icon-button>
+								</md-list-item>`;
 						},
 					)}
 				</md-list>
