@@ -1,6 +1,5 @@
 import {ReactiveController, state} from '@snar/lit';
 import {saveToLocalStorage} from 'snar-save-to-local-storage';
-import {app} from './app-shell/app-shell.js';
 import {trimSlashes} from './utils.js';
 
 export interface Bookmark {
@@ -30,9 +29,11 @@ class AppStore extends ReactiveController {
 	};
 	selectedLeaf = this.structure;
 
+	@state() selectedIndex = 0;
 	@state() selectedIndexMap: {path: string; index: number}[] = [];
 
 	firstUpdated() {
+		this.selectedIndex = 0;
 		const onHashChange = async () => {
 			let leaf = (this.selectedLeaf = this.structure);
 			const hash = decodeURIComponent(window.location.hash.slice(1));
@@ -114,6 +115,7 @@ class AppStore extends ReactiveController {
 	getFullRoute(item: BookmarkFolder, folder = this.selectedLeaf) {}
 
 	getPathSelectedIndex(path = window.location.hash.slice(1)) {
+		return this.selectedIndex;
 		path = trimSlashes(path);
 		const info = this.selectedIndexMap.find((i) => i.path === path);
 		if (info) {
@@ -123,6 +125,8 @@ class AppStore extends ReactiveController {
 		}
 	}
 	setPathSelectedIndex(path: string, index: number) {
+		this.selectedIndex = index;
+		return;
 		let info = this.selectedIndexMap.find((i) => i.path === path);
 		if (!info) {
 			info = {path, index};
