@@ -1,4 +1,4 @@
-import{Q as b,k as m,l as f,x as p,f as k,D as y}from"./index-DF6TCi_2.js";import{s as d}from"./item-dialog-BMwjTvEk.js";function P({headline:i,content:o,cancelButton:t,confirmButton:a,blockScrimClick:w=!1,blockEscapeKey:g=!1,onDialogReady:c,styles:v}){return new Promise(async(h,A)=>{const s=document.createElement("div");let u=Promise.resolve(),$=Promise.resolve(),n=!1;b(m`
+import{Q as b,k as m,l as f,x as p,f as k,D as y}from"./index-CzhlziFw.js";import{s as d}from"./item-dialog-Bv89dXwV.js";function P({headline:i,content:o,cancelButton:t,confirmButton:a,blockScrimClick:w=!1,blockEscapeKey:g=!1,onDialogReady:c,styles:v}){return new Promise(async(h,A)=>{const s=document.createElement("div");let u=Promise.resolve(),$=Promise.resolve(),n=!1;b(m`
 				<md-dialog
 					?block-scrim-click="${w}"
 					?block-escape-key="${g}"
