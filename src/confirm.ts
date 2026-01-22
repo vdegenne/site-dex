@@ -1,8 +1,8 @@
-import type {TemplateResult} from 'lit-html';
+import type {TemplateResult} from 'lit-html'
 
 interface Options {
-	headline: string;
-	content: string | TemplateResult;
+	headline: string
+	content: string | TemplateResult
 }
 
 export function confirm({
@@ -12,21 +12,22 @@ export function confirm({
 	return function (
 		_target: any,
 		_propertyKey: string,
-		descriptor: PropertyDescriptor
+		descriptor: PropertyDescriptor,
 	) {
-		const originalMethod = descriptor.value;
+		const originalMethod = descriptor.value
 		descriptor.value = async function (...args: any[]) {
-			const {materialConfirm} = await import('material-3-prompt-dialog');
+			const {materialConfirm} =
+				await import('material-3-prompt-dialog/confirm.js')
 			try {
 				await materialConfirm({
 					headline,
 					content,
-				});
+				})
 			} catch {
-				return;
+				return
 			}
-			return originalMethod.apply(this, args);
-		};
-		return descriptor;
-	};
+			return originalMethod.apply(this, args)
+		}
+		return descriptor
+	}
 }
