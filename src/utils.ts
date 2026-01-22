@@ -73,3 +73,14 @@ export async function getElementInTree(
 export function trimSlashes(input: string) {
 	return input.replace(/^(\/)*|(\/)*$/g, '');
 }
+
+export function getLocalFormattedDate(date: Date = new Date()): string {
+	return new Intl.DateTimeFormat(undefined, {
+		weekday: 'long',
+		day: '2-digit',
+		month: 'short',
+		hour: '2-digit',
+		minute: '2-digit',
+		hour12: false,
+	}).format(date);
+}
